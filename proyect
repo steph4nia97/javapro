@@ -1,0 +1,394 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package Modelo;
+
+import java.util.ArrayList;
+
+/**
+ *
+ * @author stephania
+ */
+public class Paciente {
+    private String nombre, domicilio,prevision, correo;
+    private int rut, numDocumento, telefono;
+    private ArrayList<Licencia> licencias;
+
+    public Paciente() {
+    }
+
+    public Paciente(String nombre, String domicilio, String prevision, String correo, int rut, int numDocumento, int telefono, ArrayList<Licencia> licencias) {
+        this.nombre = nombre;
+        this.domicilio = domicilio;
+        this.prevision = prevision;
+        this.correo = correo;
+        this.rut = rut;
+        this.numDocumento = numDocumento;
+        this.telefono = telefono;
+        this.licencias = new ArrayList<>();
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getDomicilio() {
+        return domicilio;
+    }
+
+    public void setDomicilio(String domicilio) {
+        this.domicilio = domicilio;
+    }
+
+    public String getPrevision() {
+        return prevision;
+    }
+
+    public void setPrevision(String prevision) {
+        this.prevision = prevision;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public int getRut() {
+        return rut;
+    }
+
+    public void setRut(int rut) {
+        this.rut = rut;
+    }
+
+    public int getNumDocumento() {
+        return numDocumento;
+    }
+
+    public void setNumDocumento(int numDocumento) {
+        this.numDocumento = numDocumento;
+    }
+
+    public int getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(int telefono) {
+        this.telefono = telefono;
+    }
+
+    public ArrayList<Licencia> getLicencias() {
+        return licencias;
+    }
+
+    public void setLicencias(ArrayList<Licencia> licencias) {
+        this.licencias = licencias;
+    }
+
+    @Override
+    public String toString() {
+        return "Paciente{" + "nombre=" + nombre + ", domicilio=" + domicilio + ", prevision=" + prevision + ", correo=" + correo + ", rut=" + rut + ", numDocumento=" + numDocumento + ", telefono=" + telefono + ", licencias=" + licencias + '}';
+    }
+
+  
+
+
+    
+    
+}
+_______________________________________________
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package Modelo;
+
+import java.util.Date;
+
+/**
+ *
+ * @author stephania
+ */
+public class Licencia {
+    private Paciente paciente;
+    private Date inicioLicencia;
+    private int idLicencia,rutEmpleador;
+    private String nombreEmpleador;
+
+    public Licencia() {
+    }
+
+    public Licencia(Paciente paciente, Date inicioLicencia, int idLicencia, int rutEmpleador, String nombreEmpleador) {
+        this.paciente = paciente;
+        this.inicioLicencia = inicioLicencia;
+        this.idLicencia = idLicencia;
+        this.rutEmpleador = rutEmpleador;
+        this.nombreEmpleador = nombreEmpleador;
+    }
+
+    public Paciente getPaciente() {
+        return paciente;
+    }
+
+    public void setPaciente(Paciente paciente) {
+        this.paciente = paciente;
+    }
+
+    public Date getInicioLicencia() {
+        return inicioLicencia;
+    }
+
+    public void setInicioLicencia(Date inicioLicencia) {
+        this.inicioLicencia = inicioLicencia;
+    }
+
+    public int getIdLicencia() {
+        return idLicencia;
+    }
+
+    public void setIdLicencia(int idLicencia) {
+        this.idLicencia = idLicencia;
+    }
+
+    public int getRutEmpleador() {
+        return rutEmpleador;
+    }
+
+    public void setRutEmpleador(int rutEmpleador) {
+        this.rutEmpleador = rutEmpleador;
+    }
+
+    public String getNombreEmpleador() {
+        return nombreEmpleador;
+    }
+
+    public void setNombreEmpleador(String nombreEmpleador) {
+        this.nombreEmpleador = nombreEmpleador;
+    }
+
+    @Override
+    public String toString() {
+        return "Licencia{" + "paciente=" + paciente + ", inicioLicencia=" + inicioLicencia + ", idLicencia=" + idLicencia + ", rutEmpleador=" + rutEmpleador + ", nombreEmpleador=" + nombreEmpleador + '}';
+    }
+    
+    
+    
+}
+______________________________-prueba registro_________________________
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package Controlador;
+
+/**
+ *
+ * @author stephania
+ */
+public class Registro {
+
+
+    // Método para agregar una licencia médica
+    public boolean agregar(LicenciaMedica licencia) {
+        try {
+            ConexionBD conexion = new ConexionBD();
+            Connection cnx = conexion.obtenerConexion();
+
+            // query SQL
+            String query = "INSERT INTO licencias_medicas (rut_paciente, fecha_inicio) VALUES (?, ?)";
+            PreparedStatement stmt = cnx.prepareStatement(query);
+            stmt.setString(1, licencia.getRutPaciente());
+            stmt.setDate(2, new java.sql.Date(licencia.getFechaInicio().getTime()));
+
+
+            stmt.executeUpdate();
+            stmt.close();
+            cnx.close();
+
+            return true;
+
+        } catch (SQLException ex) {
+            System.out.println("Error en SQL al agregar licencia médica: " + ex.getMessage());
+            return false;
+        } catch (Exception e) {
+            System.out.println("Error en el método agregar licencia médica: " + e.getMessage());
+            return false;
+        }
+    }
+
+    // Método para eliminar una licencia médica por ID
+    public boolean eliminar(int idLicencia) {
+        try {
+            ConexionBD conexion = new ConexionBD();
+            Connection cnx = conexion.obtenerConexion();
+
+            // query SQL
+            String query = "DELETE FROM licencias_medicas WHERE id = ?";
+            PreparedStatement stmt = cnx.prepareStatement(query);
+            stmt.setInt(1, idLicencia);
+
+            stmt.executeUpdate();
+            stmt.close();
+            cnx.close();
+
+            return true;
+
+        } catch (SQLException ex) {
+            System.out.println("Error en SQL al eliminar licencia médica: " + ex.getMessage());
+            return false;
+        } catch (Exception e) {
+            System.out.println("Error en el método eliminar licencia médica: " + e.getMessage());
+            return false;
+        }
+    }
+
+    // Método para actualizar los datos de una licencia médica
+    public boolean actualizar(LicenciaMedica licencia) {
+        try {
+            ConexionBD conexion = new ConexionBD();
+            Connection cnx = conexion.obtenerConexion();
+
+            // query SQL
+            String query = "UPDATE licencias_medicas SET fecha_inicio = ?, fecha_termino = ?, motivo = ?, observaciones = ? WHERE id = ?";
+            PreparedStatement stmt = cnx.prepareStatement(query);
+            stmt.setDate(1, new java.sql.Date(licencia.getFechaInicio().getTime()));
+            stmt.setDate(2, new java.sql.Date(licencia.getFechaTermino().getTime()));
+            stmt.setString(3, licencia.getMotivo());
+            stmt.setString(4, licencia.getObservaciones());
+            stmt.setInt(5, licencia.getId());
+
+            stmt.executeUpdate();
+            stmt.close();
+            cnx.close();
+
+            return true;
+
+        } catch (SQLException ex) {
+            System.out.println("Error en SQL al actualizar licencia médica: " + ex.getMessage());
+            return false;
+        } catch (Exception e) {
+            System.out.println("Error en el método actualizar licencia médica: " + e.getMessage());
+            return false;
+        }
+    }
+
+    // Método para buscar una licencia médica por ID
+    public LicenciaMedica buscarPorId(int idLicencia) {
+        LicenciaMedica licencia = new LicenciaMedica();
+        try {
+            ConexionBD conexion = new ConexionBD();
+            Connection cnx = conexion.obtenerConexion();
+
+            // query SQL
+            String query = "SELECT * FROM licencias_medicas WHERE id = ?";
+            PreparedStatement stmt = cnx.prepareStatement(query);
+            stmt.setInt(1, idLicencia);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                licencia.setId(rs.getInt("id"));
+                licencia.setRutPaciente(rs.getString("rut_paciente"));
+                licencia.setFechaInicio(rs.getDate("fecha_inicio"));
+                licencia.setFechaTermino(rs.getDate("fecha_termino"));
+                licencia.setMotivo(rs.getString("motivo"));
+                licencia.setObservaciones(rs.getString("observaciones"));
+            }
+
+            rs.close();
+            stmt.close();
+            cnx.close();
+
+        } catch (SQLException e) {
+            System.out.println("Error SQL al buscar licencia médica por ID: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Error en el método buscar licencia médica por ID: " + e.getMessage());
+        }
+        return licencia;
+    }
+
+    // Método para buscar todas las licencias médicas
+    public List<LicenciaMedica> buscarTodas() {
+        List<LicenciaMedica> lista = new ArrayList<>();
+        try {
+            ConexionBD conexion = new ConexionBD();
+            Connection cnx = conexion.obtenerConexion();
+
+            // query SQL
+            String query = "SELECT * FROM licencias_medicas ORDER BY fecha_inicio";
+            PreparedStatement stmt = cnx.prepareStatement(query);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                LicenciaMedica licencia = new LicenciaMedica();
+                licencia.setId(rs.getInt("id"));
+                licencia.setRutPaciente(rs.getString("rut_paciente"));
+                licencia.setFechaInicio(rs.getDate("fecha_inicio"));
+                licencia.setFechaTermino(rs.getDate("fecha_termino"));
+                licencia.setMotivo(rs.getString("motivo"));
+                licencia.setObservaciones(rs.getString("observaciones"));
+                lista.add(licencia);
+            }
+
+            rs.close();
+            stmt.close();
+            cnx.close();
+
+        } catch (SQLException e) {
+            System.out.println("Error SQL al listar todas las licencias médicas: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Error en el método listar todas las licencias médicas: " + e.getMessage());
+        }
+        return lista;
+    }
+}
+
+}
+
+
+_____________________________EJEMPLO BD DE HERNAN_____________________________
+
+package bd;
+import java.sql.Connection;
+import java.sql.DriverManager;
+
+/**
+ *
+ * @author USRVI-LC4
+ */
+public class ConexionBD {
+    
+    public Connection obtenerConexion() {
+        
+        Connection conexion = null;
+        
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            
+            conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/libreria","root","duoc.2024");
+            
+            System.out.println("Conexion exitosa");
+        } catch (Exception e) {
+            System.out.println("No se logro conectar a la BD");
+        }
+        
+        return conexion;
+        
+    }
+    
+    
+    
+}
+
+
+
